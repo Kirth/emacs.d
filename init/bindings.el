@@ -1,5 +1,16 @@
 (require 'helm-projectile)
 (helm-projectile-on)
 (global-set-key (kbd "C-c p h") 'helm-projectile-switch-project)
+;(global-set-key (kbd "C-x b") 'helm-browse-project)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x r b") 'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-c h a") 'helm-apropos)
+(global-set-key (kbd "C-c h r") 'helm-regex)
+(global-set-key (kbd "C-c h s") 'helm-surfraw)
+
 
 (provide 'bindings)
