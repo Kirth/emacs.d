@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t; -*-
 
+(require 'telephone-line)
+
 ;; Hide those ugly tool bars:
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -8,6 +10,9 @@
 ;; Don't do any annoying things:
 (setq ring-bell-function 'ignore)
 (setq initial-scratch-message "")
+
+;; Remember layout changes
+(winner-mode 1)
 
 ;; Usually emacs will run as a proper GUI application, in which case a few
 ;; extra settings are nice-to-have:
@@ -19,15 +24,62 @@
 ;; Configure editor fonts
 
 ;; Determine fontsize based on machine (4K display on stallo):
-;(letrec ((font-size 12)
-;         (font (format "Input Mono-%d" font-size)))
-;  (setq default-frame-alist `((font-backend . "xft")
-;                              (font . ,font)))
-;  (set-frame-font font t t))
+(letrec ((font-size 12)
+         (font (format "Input Mono-%d" font-size)))
+  (setq default-frame-alist `((font-backend . "xft")
+                              (font . ,font)))
+  (set-frame-font font t t))
 
 (defun configure-new-frame (frame)
   "Configuration settings to run whenever a new frame is created."
   (scroll-bar-mode 0)) ; Disable visual scroll bar (ugh!)
+
+(setq battery-mode-line-format "%b%p%%")
+(display-battery-mode)
+
+;; Configure telephone-line
+(defun telephone-misc-if-last-window ()
+  "Renders the mode-line-misc-info string for display in the
+  mode-line if the currently active window is the last one in the
+  frame.
+  The idea is to not display information like the current time,
+  load, battery levels in all buffers."
+
+  (when (bottom-right-window-p)
+      (telephone-line-raw mode-line-misc-info t)))
+
+(telephone-line-defsegment telephone-line-last-window-segment ()
+  (telephone-misc-if-last-window))
+
+;; Display the current EXWM workspace index in the mode-line
+(telephone-line-defsegment telephone-line-exwm-workspace-index ()
+  (when (bottom-right-window-p)
+    (format "[%s]" exwm-workspace-current-index)))
+
+;; Define a highlight font for ~ important ~ information in the last
+;; window.
+(defface special-highlight '((t (:foreground "white" :background "#5f627f"))) "")
+(add-to-list 'telephone-line-faces
+             '(highlight . (special-highlight . special-highlight)))
+
+(setq telephone-line-lhs
+      '((nil . (telephone-line-position-segment))
+        (accent . (telephone-line-buffer-segment))))
+
+(setq telephone-line-rhs
+      '((accent . (telephone-line-major-mode-segment))
+        (nil . (telephone-line-last-window-segment
+                telephone-line-exwm-workspace-index))
+      ;;  (highlight . (telephone-line-notmuch-counts))
+				))
+
+(setq telephone-line-primary-left-separator 'telephone-line-tan-left
+      telephone-line-primary-right-separator 'telephone-line-tan-right
+      telephone-line-secondary-left-separator 'telephone-line-tan-hollow-left
+      telephone-line-secondary-right-separator 'telephone-line-tan-hollow-right)
+
+(telephone-line-mode 1)
+
 
 (add-hook 'after-make-frame-functions 'configure-new-frame)
 

@@ -5,6 +5,8 @@
 (setq evil-want-C-u-scroll t)
 (require 'evil)
 (evil-mode 1)
+(ivy-mode 1)
+(counsel-mode 1)
 
 ;; Always highlight matching brackets
 (show-paren-mode 1)
@@ -14,7 +16,7 @@
 (global-undo-tree-mode)
 
 ;; Easily navigate sillycased words
-;(global-subword-mode 1)
+(global-subword-mode 1)
 
 ;; Transparently open compressed files
 ;(auto-compression-mode t)
@@ -23,6 +25,6 @@
 ;(which-key-mode t)
 
 ;; Show previews of ace-window numbers in the mode line for each window.
-;(ace-window-display-mode)
+(ace-window-display-mode)
 
 (provide 'modes)

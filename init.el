@@ -27,22 +27,32 @@
 ;; Load configuration that makes use of installed packages:
 (defvar desired-packages
   '(
+        ace-window 
 	cargo
+	dockerfile-mode
 	erlang
 	zenburn-theme
 	challenger-deep-theme
 	exwm
 	go-mode
+	gradle-mode
 	haskell-mode
-	helm
-	helm-exwm
-	helm-pass
+	counsel
+	;;hel m
+	;; helm-exwm
+	;; helm-pass
+	;; helm-ag
 	markdown-mode+
 	password-store
 	pg
 	puppet-mode
 	scala-mode
 	racer
+	sly
+	ivy
+	ivy-prescient
+	prescient
+	magit
 	rainbow-delimiters
 	rainbow-mode
 	rust-mode
@@ -51,7 +61,7 @@
 	evil
 	yaml-mode
 	projectile
-	helm-projectile
+;;	helm-projectile
 	erc
     ))
 
@@ -73,8 +83,15 @@
   (mapc 'require '(modes
 		   bindings
 		   custom
+		   functions
 		   look-and-feel
+		   nixos
                    )))
+
+;; todo: refactor exwm
+(require 'exwm)
+(require 'exwm-config)
+(exwm-config-default)
 
 (add-hook 'after-init-hook 'load-other-settings)
 (put 'narrow-to-region 'disabled nil)
@@ -101,7 +118,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ helm-pass helm-exwm haskell-mode go-mode evil erlang cargo)))
+    (telephone-line counsel paredit zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ haskell-mode go-mode evil erlang cargo)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map

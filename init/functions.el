@@ -59,16 +59,16 @@
   (if (file-exists-p filename)
       (load filename)))
 
-;; These come from magnars, he's got some awesome things.
-
 (defun goto-line-with-feedback ()
   "Show line numbers temporarily, while prompting for the line number input"
   (interactive)
   (unwind-protect
       (progn
-        (linum-mode 1)
-        (call-interactively 'goto-line))
-    (linum-mode -1)))
+        (setq-local display-line-numbers t)
+        (let ((target (read-number "Goto line: ")))
+          (avy-push-mark)
+          (goto-line target)))
+    (setq-local display-line-numbers nil)))
 
 
 (defun untabify-buffer ()
@@ -110,6 +110,11 @@ Including indent-buffer, which should not be called automatically on save."
   (interactive)
   (find-file "/etc/nixos/configuration.nix"))
 
+;; Open the NixOS man page
+(defun nixos-man ()
+  (interactive)
+  (man "configuration.nix"))
+
 ;; Open local emacs configuration
 (defun emacs-config ()
   (interactive)
@@ -133,5 +138,90 @@ Including indent-buffer, which should not be called automatically on save."
   (message "require-final-newline in buffer %s is now %s"
            (buffer-name)
            require-final-newline))
+
+;; Helm includes a command to run external applications, which does
+;; not seem to exist in ivy. This implementation uses some of the
+;; logic from Helm to provide similar functionality using ivy.
+(defun list-external-commands ()
+  "Creates a list of all external commands available on $PATH
+  while filtering NixOS wrappers."
+  (cl-loop
+   for dir in (split-string (getenv "PATH") path-separator)
+   when (and (file-exists-p dir) (file-accessible-directory-p dir))
+   for lsdir = (cl-loop for i in (directory-files dir t)
+                        for bn = (file-name-nondirectory i)
+                        when (and (not (s-contains? "-wrapped" i))
+                                  (not (member bn completions))
+                                  (not (file-directory-p i))
+                                  (file-executable-p i))
+                        collect bn)
+   append lsdir into completions
+   finally return (sort completions 'string-lessp)))
+
+(defun ivy-run-external-command ()
+  "Prompts the user with a list of all installed applications and
+  lets them select one to launch."
+
+  (interactive)
+  (let ((external-commands-list (list-external-commands)))
+    (ivy-read "Command:" external-commands-list
+              :require-match t
+              :history 'external-commands-history
+              :action (lambda (cmd)
+                        (message "Starting %s..." cmd)
+                        (set-process-sentinel
+                         (start-process-shell-command cmd nil cmd)
+                         (lambda (process event)
+                           (when (string= event "finished\n")
+                             (message "%s process finished." process))))))))
+
+(defun ivy-password-store (&optional password-store-dir)
+  "Custom version of password-store integration with ivy that
+  actually uses the GPG agent correctly."
+
+  (interactive)
+  (ivy-read "Copy password of entry: "
+            (password-store-list (or password-store-dir (password-store-dir)))
+            :require-match t
+            :keymap ivy-pass-map
+            :action (lambda (entry)
+                      (let ((password (auth-source-pass-get 'secret entry)))
+                        (password-store-clear)
+                        (kill-new password)
+                        (setq password-store-kill-ring-pointer kill-ring-yank-pointer)
+                        (message "Copied %s to the kill ring. Will clear in %s seconds."
+                                 entry (password-store-timeout))
+                        (setq password-store-timeout-timer
+                              (run-at-time (password-store-timeout)
+                                           nil 'password-store-clear))))))
+
+(defun ivy-browse-repositories ()
+  "Select a git repository and open its associated magit buffer."
+
+  (interactive)
+  (ivy-read "Repository: "
+            (magit-list-repos)
+            :require-match t
+            :sort t
+            :action #'magit-status))
+
+(defun warmup-gpg-agent (arg &optional exit)
+  "Function used to warm up the GPG agent before use. This is
+   useful in cases where there is no easy way to make pinentry run
+   in the correct context (such as when sending email)."
+  (interactive)
+  (message "Warming up GPG agent")
+  (epg-sign-string (epg-make-context) "dummy")
+  nil)
+
+(defun bottom-right-window-p ()
+  "Determines whether the last (i.e. bottom-right) window of the
+  active frame is showing the buffer in which this function is
+  executed."
+  (let* ((frame (selected-frame))
+         (right-windows (window-at-side-list frame 'right))
+         (bottom-windows (window-at-side-list frame 'bottom))
+         (last-window (car (seq-intersection right-windows bottom-windows))))
+    (eq (current-buffer) (window-buffer last-window))))
 
 (provide 'functions)
