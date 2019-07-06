@@ -1,5 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 
+(require 'calendar)
 (require 'telephone-line)
 
 ;; Hide those ugly tool bars:
@@ -34,7 +35,7 @@
   "Configuration settings to run whenever a new frame is created."
   (scroll-bar-mode 0)) ; Disable visual scroll bar (ugh!)
 
-(setq battery-mode-line-format "%b%p%%")
+(setq battery-mode-line-format "%b%p%% ")
 (display-battery-mode)
 
 ;; Configure telephone-line
@@ -50,6 +51,10 @@
 
 (telephone-line-defsegment telephone-line-last-window-segment ()
   (telephone-misc-if-last-window))
+
+(telephone-line-defsegment telephone-line-date ()
+  (when (bottom-right-window-p)
+    (calendar-date-string (calendar-current-date) nil)))
 
 ;; Display the current EXWM workspace index in the mode-line
 (telephone-line-defsegment telephone-line-exwm-workspace-index ()
@@ -69,6 +74,7 @@
 (setq telephone-line-rhs
       '((accent . (telephone-line-major-mode-segment))
         (nil . (telephone-line-last-window-segment
+                telephone-line-date
                 telephone-line-exwm-workspace-index))
       ;;  (highlight . (telephone-line-notmuch-counts))
 				))
@@ -79,7 +85,6 @@
       telephone-line-secondary-right-separator 'telephone-line-tan-hollow-right)
 
 (telephone-line-mode 1)
-
 
 (add-hook 'after-make-frame-functions 'configure-new-frame)
 

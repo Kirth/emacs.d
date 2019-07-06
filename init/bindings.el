@@ -18,23 +18,46 @@
 ;; imenu instead of insert-file
 (global-set-key (kbd "C-x i") 'imenu)
 
-(global-set-key (kbd "C-x o") ; Yes, I went there!
-                'ace-window)
+;(global-set-key (kbd "C-x o") ; Yes, I went there!
+;L               'ace-window)
 
 ;; Window switching. (C-x o goes to the next window)
 (windmove-default-keybindings) ;; Shift+direction
 
 ;; Start eshell or switch to it if it's active.
-(global-set-key (kbd "C-x m") 'eshell)
+;(global-set-key (kbd "C-x m") 'eshell)
 
 ;; Magit!
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key (kbd "C-x p") 'ivy-browse-repositories)
 
+;; Avy Mode
+(global-set-key (kbd "M-j") 'avy-goto-char)
+(global-set-key (kbd "M-p") 'avy-pop-mark)
+
+;; Go to line with feedback
+(global-set-key (kbd "M-g") 'goto-line-with-feedback)
+
+
+(global-set-key (kbd "C-d") 'duplicate-line)
+
 ;; Use swiper instead of isearch
 (global-set-key "\C-s" 'swiper)
 ;; Launch applications with completion (dmenu style!)
-(exwm-input-set-key (kbd "s-d") #'ivy-run-external-command)
+;(exwm-input-set-key (kbd "s-d") #'ivy-run-external-command)
 ;;(exwm-input-set-key (kbd "s-p") #'ivy-password-store)
+
+;; Open a file in project:
+(global-set-key (kbd "C-c f") 'project-find-file)
+
+;; Neotree
+(global-set-key [f8] 'neotree-toggle)
+
+;; Stop accidentally opening up the HELLO buffer
+(global-unset-key "\C-h")
+
+;; Bind Meta to C-x C-m, to prevent pinky scrunching
+(global-set-key "\C-x\C-m" 'execute-extended-command)
+(global-set-key "\C-c\C-m" 'execute-extended-command)
 
 (provide 'bindings)

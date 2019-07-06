@@ -21,12 +21,12 @@
 
 (defun brightness-up ()
   (interactive)
-  (shell-command "exec light -A 10")
+  (shell-command "exec xbacklight -inc 10")
   (message "Brightness increased"))
 
 (defun brightness-down ()
   (interactive)
-  (shell-command "exec light -U 10")
+  (shell-command "exec xbacklight -dec 10")
   (message "Brightness decreased"))
 
 (defun lock-screen ()
@@ -38,59 +38,63 @@
               (0 "eDP1")
               ,(-map (lambda (n) (list n "eDP1")) (number-sequence 6 9)))))
 
-(require 'exwm)
-(require 'exwm-config)
-(require 'exwm-randr)
+;(require 'exwm)
+;(require 'exwm-config)
+;(require 'exwm-randr)
 
 (fringe-mode 3)
 
-(setq exwm-workspace-number 2)
-;; Make class name the buffer name
-(add-hook 'exwm-update-class-hook
-	(lambda ()
-	  (exwm-workspace-rename-buffer exwm-class-name)))
+;; (setq exwm-workspace-number 2)
+;; ;; Make class name the buffer name
+;; (add-hook 'exwm-update-class-hook
+;; 	(lambda ()
+;; 	  (exwm-workspace-rename-buffer exwm-class-name)))
 
-;; 's-r': Reset
-(exwm-input-set-key (kbd "s-r") #'exwm-reset)
-;; 's-w': Switch workspace
-(exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
-;; 's-N': Switch to certain workspace
-(dotimes (i 10)
-(exwm-input-set-key (kbd (format "s-%d" i))
-		    `(lambda ()
-		       (interactive)
-		       (exwm-workspace-switch-create ,i))))
+;; ;; 's-r': Reset
+;; (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+;; ;; 's-w': Switch workspace
+;; (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+;; ;; 's-N': Switch to certain workspace
+;; (dotimes (i 10)
+;; (exwm-input-set-key (kbd (format "s-%d" i))
+;; 		    `(lambda ()
+;; 		       (interactive)
+;; 		       (exwm-workspace-switch-create ,i))))
 
-;; Toggle between line-mode / char-mode
-(exwm-input-set-key (kbd "C-c C-t C-t") #'exwm-input-toggle-keyboard)
+;; ;; Toggle between line-mode / char-mode
+;; (exwm-input-set-key (kbd "C-c C-t C-t") #'exwm-input-toggle-keyboard)
 
-;; Volume keys
-(exwm-input-set-key (kbd "<XF86AudioMute>") #'volume-mute)
-(exwm-input-set-key (kbd "<XF86AudioRaiseVolume>") #'volume-up)
-(exwm-input-set-key (kbd "<XF86AudioLowerVolume>") #'volume-down)
+;; ;; Volume keys
+;; (exwm-input-set-key (kbd "<XF86AudioMute>") #'volume-mute)
+;; (exwm-input-set-key (kbd "C-<f5>") #'volume-mute)
+;; (exwm-input-set-key (kbd "<XF86AudioRaiseVolume>") #'volume-up)
+;; (exwm-input-set-key (kbd "C-<f7>") #'volume-up)
+;; (exwm-input-set-key (kbd "<XF86AudioLowerVolume>") #'volume-down)
+;; (exwm-input-set-key (kbd "C-<f6>") #'volume-down)
 
-;; Brightness keys
-(exwm-input-set-key (kbd "<XF86MonBrightnessDown>") #'brightness-down)
-(exwm-input-set-key (kbd "<XF86MonBrightnessUp>") #'brightness-up)
-(exwm-input-set-key (kbd "<XF86Display>") #'lock-screen)
+;; ;; Brightness keys
+;; (exwm-input-set-key (kbd "<XF86MonBrightnessDown>") #'brightness-down)
+;; (exwm-input-set-key (kbd "<XF86MonBrightnessUp>") #'brightness-up)
+;; (exwm-input-set-key (kbd "<XF86Display>") #'lock-screen)
 
-;; Line-editing shortcuts
-(exwm-input-set-simulation-keys
-'(([?\C-d] . delete)
- ([?\C-w] . ?\C-c)))
+;; ;; Line-editing shortcuts
+;; (exwm-input-set-simulation-keys
+;;  '(
+;;                                         ;([?\C-d] . delete)
+;;  ([?\C-w] . ?\C-c)))
 
-;; Enable EXWM
-(exwm-enable)
+;; ;; Enable EXWM
+;; (exwm-enable)
 
-;; Show time in the mode line
-(display-time-mode)
+;; ;; Show time in the mode line
+;; (display-time-mode)
 
-;; Another attempt at xrandr configuration
-(setq exwm-randr-workspace-output-plist (generate-randr-config))
-(exwm-randr-enable)
+;; ;; Another attempt at xrandr configuration
+;; (setq exwm-randr-workspace-output-plist (generate-randr-config))
+;; (exwm-randr-enable)
 
-;; Let buffers move seamlessly between workspaces
-(setq exwm-workspace-show-all-buffers t)
-(setq exwm-layout-show-all-buffers t)
+;; ;; Let buffers move seamlessly between workspaces
+;; (setq exwm-workspace-show-all-buffers t)
+;; (setq exwm-layout-show-all-buffers t)
 
 (provide 'nixos)

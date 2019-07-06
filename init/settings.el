@@ -65,5 +65,8 @@
 ;; Configure pinentry for use with GPG
 ;(setq epa-pinentry-mode 'loopback)
 ;(pinentry-start)
+(setq jiralib-url "https://dataartisans.atlassian.net/")
+(setq magit-repository-directories '(("/home/kirth/DA" . 2)))
+(setq-default dired-listing-switches "-alhv")
 
 (provide 'settings)

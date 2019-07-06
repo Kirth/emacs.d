@@ -23,29 +23,39 @@
 
 ;; Add 'init' folder that contains other settings to load.
 (add-to-list 'load-path (concat user-emacs-directory "init"))
+(add-to-list 'load-path (concat user-emacs-directory "ext"))
+
+(load "json-error") ; Todo: better handling?
 
 ;; Load configuration that makes use of installed packages:
 (defvar desired-packages
   '(
-        ace-window 
+        multiple-cursors
+        ace-window
+        frames-only-mode
 	cargo
 	dockerfile-mode
 	erlang
 	zenburn-theme
 	challenger-deep-theme
-	exwm
+;	exwm
 	go-mode
 	gradle-mode
 	haskell-mode
 	counsel
+        counsel-projectile
+        neotree
 	;;hel m
 	;; helm-exwm
 	;; helm-pass
 	;; helm-ag
 	markdown-mode+
 	password-store
+        visual-regexp
+        visual-regexp-steroids
 	pg
 	puppet-mode
+        protobuf-mode
 	scala-mode
 	racer
 	sly
@@ -59,6 +69,7 @@
 	string-edit
 	undo-tree
 	evil
+        js2-mode
 	yaml-mode
 	projectile
 ;;	helm-projectile
@@ -85,13 +96,16 @@
 		   custom
 		   functions
 		   look-and-feel
+                   settings
 		   nixos
+                   term-setup
+                   eshell-setup
                    )))
 
 ;; todo: refactor exwm
-(require 'exwm)
-(require 'exwm-config)
-(exwm-config-default)
+;(require 'exwm)
+;(require 'exwm-config)
+;(exwm-config-default)
 
 (add-hook 'after-init-hook 'load-other-settings)
 (put 'narrow-to-region 'disabled nil)
@@ -111,14 +125,16 @@
  '(custom-enabled-themes (quote (challenger-deep)))
  '(custom-safe-themes
    (quote
-    ("dcb9fd142d390bb289fee1d1bb49cb67ab7422cd46baddf11f5c9b7ff756f64c" "e11569fd7e31321a33358ee4b232c2d3cf05caccd90f896e1df6cab228191109" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "89336ca71dae5068c165d932418a368a394848c3b8881b2f96807405d8c6b5b6" default)))
+    ("f71859eae71f7f795e734e6e7d178728525008a28c325913f564a42f74042c31" "dcb9fd142d390bb289fee1d1bb49cb67ab7422cd46baddf11f5c9b7ff756f64c" "e11569fd7e31321a33358ee4b232c2d3cf05caccd90f896e1df6cab228191109" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "89336ca71dae5068c165d932418a368a394848c3b8881b2f96807405d8c6b5b6" default)))
  '(fci-rule-color "#383838")
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(org-agenda-files (quote ("~/Notes/diary.org")))
  '(package-selected-packages
    (quote
-    (telephone-line counsel paredit zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ haskell-mode go-mode evil erlang cargo)))
+    (frames-only-mode lorem-ipsum page-break-lines dashboard image-dired+ multiple-cursors neotree visual-regexp-steroids visual-regexp protobuf-mode racket-mode highlight-indent-guides jsx-mode web-mode kubernetes terraform-mode org-jira paradox multi-term ag counsel-projectile telephone-line counsel paredit zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ haskell-mode go-mode evil erlang cargo)))
+ '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map

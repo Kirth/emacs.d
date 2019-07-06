@@ -105,6 +105,10 @@ Including indent-buffer, which should not be called automatically on save."
   (interactive)
   (eww "https://blog.fefe.de/"))
 
+(defun stoned-tickets ()
+  (interactive)
+  (find-file "/home/kirth/stoned_kitty/tickets_to_self.org"))
+
 ;; Open this machines NixOS config
 (defun nix-config ()
   (interactive)
@@ -130,6 +134,15 @@ Including indent-buffer, which should not be called automatically on save."
   (interactive)
   (let ((derivation (read-string "Derivation name (in <nixos>): ")))
     (insert (nix-store-path derivation))))
+
+(defun duplicate-line()
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (open-line 1)
+  (next-line 1)
+  (yank))
 
 (defun toggle-force-newline ()
   "Buffer-local toggle for enforcing final newline on save."
@@ -200,7 +213,7 @@ Including indent-buffer, which should not be called automatically on save."
 
   (interactive)
   (ivy-read "Repository: "
-            (magit-list-repos)
+            (magit-list-repositories)
             :require-match t
             :sort t
             :action #'magit-status))
