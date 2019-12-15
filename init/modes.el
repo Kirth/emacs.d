@@ -4,7 +4,27 @@
 
 (ivy-mode 1)
 (counsel-mode 1)
-(frames-only-mode 1)
+(global-git-gutter-mode +1)
+(git-gutter:linum-setup)
+
+
+
+;; Python dev
+(elpy-enable)
+
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;; end python
+
+(require 'rust-mode)
+(setq rust-format-on-save t)
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
+
 
 ;; Always highlight matching brackets
 (show-paren-mode 1)
@@ -42,24 +62,5 @@
 (define-key global-map "\C-cc" 'org-capture)
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'visual-line-mode)
-
-;; Dashboard
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-
-(setq dashboard-items '((bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-
-;(require 'js2-mode)
-;(require 'json-error)
-
-;; (add-to-list 'auto-mode-alist '(".json$" . js-mode))
-;; ;; load json-error-mode when looking at json files
-;; (add-hook 'js2-mode-hook
-;;       (lambda ()
-;;         (when (string-match "\\.json$" (buffer-file-name))
-;;           (json-error-mode))))
 
 (provide 'modes)

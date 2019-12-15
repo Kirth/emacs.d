@@ -1,15 +1,15 @@
 (require 'uniquify)
 
-(require 'prescient)
-(require 'ivy-prescient)
+;(require 'prescient)
+;(require 'ivy-prescient)
 ;;(require 'ivy-pass)
 
 (ivy-mode 1)
 (counsel-mode 1)
 
-(ivy-prescient-mode)
-(prescient-persist-mode)
-(add-to-list 'ivy-prescient-excluded-commands 'counsel-rg)
+;(ivy-prescient-mode)
+;(prescient-persist-mode)
+;(add-to-list 'ivy-prescient-excluded-commands 'counsel-rg)
 
 ;; Move files to trash when deleting
 (setq delete-by-moving-to-trash t)
@@ -65,8 +65,7 @@
 ;; Configure pinentry for use with GPG
 ;(setq epa-pinentry-mode 'loopback)
 ;(pinentry-start)
-(setq jiralib-url "https://dataartisans.atlassian.net/")
-(setq magit-repository-directories '(("/home/kirth/DA" . 2)))
+(setq magit-repository-directories '(("/home/kirth/Work" . 2)))
 (setq-default dired-listing-switches "-alhv")
 
 (provide 'settings)
