@@ -18,8 +18,7 @@
 ;; imenu instead of insert-file
 (global-set-key (kbd "C-x i") 'imenu)
 
-;(global-set-key (kbd "C-x o") ; Yes, I went there!
-;L               'ace-window)
+(global-set-key (kbd "C-x o") 'ace-window)
 
 ;; Window switching. (C-x o goes to the next window)
 (windmove-default-keybindings) ;; Shift+direction
@@ -59,5 +58,36 @@
 ;; Bind Meta to C-x C-m, to prevent pinky scrunching
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key "\C-c\C-m" 'execute-extended-command)
+
+;; Dired-Subtree
+(define-key dired-mode-map (kbd "<tab>") 'dired-subtree-toggle)
+(define-key dired-mode-map ";" 'dired-subtree-remove)
+
+;; Mac -- Anne Pro
+(global-set-key (kbd "<menu>") 'execute-extended-command)
+
+(global-set-key (kbd "C-c %") 'match-paren)
+
+(require 'string-inflection)
+(global-set-key (kbd "C-c i") 'string-inflection-cycle)
+(global-set-key (kbd "C-c C") 'string-inflection-camelcase)        ;; Force to CamelCase
+(global-set-key (kbd "C-c L") 'string-inflection-lower-camelcase)  ;; Force to lowerCamelCase
+(global-set-key (kbd "C-c J") 'string-inflection-java-style-cycle) ;; Cycle through Java styles
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(global-set-key (kbd "C-x g") 'git-gutter+-mode) ; Turn on/off in the current buffer
+(global-set-key (kbd "C-x G") 'global-git-gutter+-mode) ; Turn on/off globally
+
+(global-set-key (kbd "C-s-f") 'forward-sexp)
+(global-set-key (kbd "C-s-b") 'backward-sexp)
+
+(global-set-key (kbd "s-f") 'forward-whitespace)
+(global-set-key (kbd "s-b") 'backward-whitespace)
+
+
+;(global-unset-key "\C-x mo")
+;(global-set-key (kbd "C-x mo") 'occur)
 
 (provide 'bindings)

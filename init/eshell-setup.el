@@ -2,6 +2,10 @@
 
 (require 'eshell)
 
+(require 'shell-switcher)
+(setq shell-switcher-mode t)
+(add-hook 'eshell-mode-hook 'shell-switcher-manually-register-shell)
+
 ;; Generic settings
 ;; Hide banner message ...
 (setq eshell-banner-message "")
@@ -62,7 +66,7 @@
 (defun eshell-mode-hook-func ()
   (setq eshell-path-env (concat "/home/kirth/google-cloud-sdk/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/kirth/bin:/home/kirth/.cargo/bin:/home/kirth/go/bin:/home/kirth/bin:/home/kirth/.cargo/bin:/home/kirth/go/bin:/usr/local/bin:" eshell-path-env))
   (setenv "PATH" (concat "/usr/local/bin:" (getenv "PATH")))
-  (local-set-key (kbd "C-x C-o") 'ffap) ; Open file under point in shell
+  (local-set-key (kbd "C-x C-v") 'ffap) ; Open file under point in shell
 )
 
 ;; Load some EShell extensions

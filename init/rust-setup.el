@@ -5,7 +5,7 @@
 (add-hook 'rust-mode-hook #'cargo-minor-mode)
 
 ;; Configure autocompletion for rust
-(add-hook 'rust-mode-hook #'racer-mode)
+;(add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'company-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
@@ -17,5 +17,7 @@
 ;; I don't use rustup and I'm not sure which derivation would normally place
 ;; Rust sources in the nix-store, so I'll continue using my local Rust checkout.
 (setq racer-rust-src-path "~/source/rust/src")
+(setq rust-format-on-save t)
+
 
 (provide 'rust-setup)

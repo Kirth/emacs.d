@@ -155,21 +155,21 @@ Including indent-buffer, which should not be called automatically on save."
 ;; Helm includes a command to run external applications, which does
 ;; not seem to exist in ivy. This implementation uses some of the
 ;; logic from Helm to provide similar functionality using ivy.
-(defun list-external-commands ()
-  "Creates a list of all external commands available on $PATH
-  while filtering NixOS wrappers."
-  (cl-loop
-   for dir in (split-string (getenv "PATH") path-separator)
-   when (and (file-exists-p dir) (file-accessible-directory-p dir))
-   for lsdir = (cl-loop for i in (directory-files dir t)
-                        for bn = (file-name-nondirectory i)
-                        when (and (not (s-contains? "-wrapped" i))
-                                  (not (member bn completions))
-                                  (not (file-directory-p i))
-                                  (file-executable-p i))
-                        collect bn)
-   append lsdir into completions
-   finally return (sort completions 'string-lessp)))
+;; (defun list-external-commands ()
+;;   "Creates a list of all external commands available on $PATH
+;;   while filtering NixOS wrappers."
+;;   (cl-loop
+;;    for dir in (split-string (getenv "PATH") path-separator)
+;;    when (and (file-exists-p dir) (file-accessible-directory-p dir))
+;;    for lsdir = (cl-loop for i in (directory-files dir t)
+;;                         for bn = (file-name-nondirectory i)
+;;                         when (and (not (s-contains? "-wrapped" i))
+;;                                   (not (member bn completions))
+;;                                   (not (file-directory-p i))
+;;                                   (file-executable-p i))
+;;                         collect bn)
+;;    append lsdir into completions
+;;    finally return (sort completions 'string-lessp)))
 
 (defun ivy-run-external-command ()
   "Prompts the user with a list of all installed applications and
@@ -236,5 +236,18 @@ Including indent-buffer, which should not be called automatically on save."
          (bottom-windows (window-at-side-list frame 'bottom))
          (last-window (car (seq-intersection right-windows bottom-windows))))
     (eq (current-buffer) (window-buffer last-window))))
+
+
+(defun match-paren (arg)
+  "Go to the matching paren if on a paren; otherwise insert %."
+  (interactive "p")
+  (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
+        ((looking-at "\\s)") (forward-char 1) (backward-list 1))
+        (t (self-insert-command (or arg 1)))))
+
+(defun backward-whitespace (arg)
+  "Move point to the beginning of the current sequence of whitespace characters."
+  (interactive "^p")
+  (forward-whitespace (- arg)))
 
 (provide 'functions)

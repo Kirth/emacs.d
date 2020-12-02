@@ -4,9 +4,9 @@
 
 (ivy-mode 1)
 (counsel-mode 1)
-(global-git-gutter-mode +1)
-(git-gutter:linum-setup)
+(projectile-mode 1)
 
+ (global-anzu-mode +1)
 
 
 ;; Python dev
@@ -18,6 +18,8 @@
 
 (require 'py-autopep8)
 (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+(setq elpy-rpc-python-command "python3")
 
 ;; end python
 
@@ -46,7 +48,11 @@
 (auto-compression-mode t)
 
 ;; Show available key chord completions
-;(which-key-mode t)
+                                        ;(which-key-mode t)
+
+(add-hook 'yaml-mode-hook
+          (lambda ()
+            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; recent files
 (recentf-mode)
@@ -62,5 +68,38 @@
 (define-key global-map "\C-cc" 'org-capture)
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'visual-line-mode)
+
+
+(setq-default tab-width 2)
+(setq tab-width 2)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
+
+(defun my-c-mode-hook ()
+   (setq indent-tabs-mode nil
+         c-basic-offset 2))
+(add-hook 'c-mode-common-hook 'my-c-mode-hook)
+
+(defun my-csharp-mode-setup ()
+  (omnisharp-mode)
+  (company-mode)
+  (flycheck-mode)
+
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+  (setq evil-shift-width 4)
+
+  ;csharp-mode README.md recommends this too
+  ;(electric-pair-mode 1)       ;; Emacs 24
+  ;(electric-pair-local-mode 1) ;; Emacs 25
+
+  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  (local-set-key (kbd "C-c C-c") 'recompile))
+
+(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
 
 (provide 'modes)

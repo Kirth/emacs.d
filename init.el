@@ -7,9 +7,13 @@
 (require 'seq)
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-
-
 (package-initialize)
+
+(menu-bar-mode t)
+(setenv "PATH" (concat "/Users/kirth/.cargo/bin:" (concat "/usr/local/bin:" (getenv "PATH"))))
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
 
 ;; Configure a few basics before moving on to package-specific initialisation.
 ;(setq custom-file (concat user-emacs-directory "init/custom.el"))
@@ -21,20 +25,30 @@
 ;; Seed RNG
 (random t)
 
+;; Start server
+(server-start)
+
 ;; Add 'init' folder that contains other settings to load.
 (add-to-list 'load-path (concat user-emacs-directory "init"))
+;(add-to-list 'custom-theme-load-path (concat user-emacs-directory "themes"))
 
 
 ;; Load configuration that makes use of installed packages:
 (defvar desired-packages
   '(
+    anzu
         multiple-cursors
         ace-window
+        dired-subtree
+        groovy-mode
         frames-only-mode
-	cargo
+        cargo
+        which-key
+        indent-tools
 	dockerfile-mode
 	erlang
 	challenger-deep-theme
+  shell-switcher
 	go-mode
 	gradle-mode
 	haskell-mode
@@ -84,14 +98,14 @@
 ;; After initialisation, proceed to load configuration that requires packages:
 (defun load-other-settings ()
   (mapc 'require '(modes
-		   bindings
-		   custom
-		   functions
-		   look-and-feel
+                   bindings
+                   custom
+                   functions
+                   look-and-feel
                    settings
-		   nixos
                    term-setup
                    eshell-setup
+                   rust-setup
                    )))
 
 (add-hook 'after-init-hook 'load-other-settings)
@@ -119,7 +133,7 @@
  '(custom-enabled-themes (quote (challenger-deep)))
  '(custom-safe-themes
    (quote
-    ("4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "f71859eae71f7f795e734e6e7d178728525008a28c325913f564a42f74042c31" "dcb9fd142d390bb289fee1d1bb49cb67ab7422cd46baddf11f5c9b7ff756f64c" "e11569fd7e31321a33358ee4b232c2d3cf05caccd90f896e1df6cab228191109" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "89336ca71dae5068c165d932418a368a394848c3b8881b2f96807405d8c6b5b6" default)))
+    ("ffb05ecdb8ba03e0f7ec658165f695fe66446d151fd2c755fbc8a3ec10fa5098" "4ce13ab8b7a8b44ed912a74312b252b0a3ad79b0da6b1034c0145b1fcfd206cb" "f71859eae71f7f795e734e6e7d178728525008a28c325913f564a42f74042c31" "dcb9fd142d390bb289fee1d1bb49cb67ab7422cd46baddf11f5c9b7ff756f64c" "e11569fd7e31321a33358ee4b232c2d3cf05caccd90f896e1df6cab228191109" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "89336ca71dae5068c165d932418a368a394848c3b8881b2f96807405d8c6b5b6" default)))
  '(fci-rule-color "#383838")
  '(nrepl-message-colors
    (quote
@@ -127,9 +141,10 @@
  '(org-agenda-files (quote ("~/Notes/diary.org")))
  '(package-selected-packages
    (quote
-    (cider clojure-mode git-gutter git-link py-autopep8 flycheck elpy company-prescient frames-only-mode lorem-ipsum page-break-lines image-dired+ multiple-cursors neotree visual-regexp-steroids visual-regexp protobuf-mode racket-mode highlight-indent-guides jsx-mode web-mode kubernetes terraform-mode org-jira paradox multi-term ag counsel-projectile telephone-line counsel paredit zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ haskell-mode go-mode evil erlang cargo)))
+    (nix-mode omnisharp csharp-mode smex vterm exec-path-from-shell rustic lsp-mode git-gutter-fringe+ git-gutter+ mark-multiple phps-mode company kotlin-mode nov expand-region string-inflection emojify anzu shell-switcher swift-mode list-packages-ext major-mode-hydra which-key indent-tools indent-guide doom-modeline ace-jump-mode groovy-mode dired-subtree lua-mode cider clojure-mode git-gutter git-link py-autopep8 flycheck elpy company-prescient frames-only-mode lorem-ipsum page-break-lines image-dired+ multiple-cursors neotree visual-regexp-steroids visual-regexp protobuf-mode racket-mode highlight-indent-guides jsx-mode web-mode kubernetes terraform-mode org-jira paradox multi-term ag counsel-projectile telephone-line counsel paredit zenburn-theme yaml-mode string-edit rainbow-mode rainbow-delimiters racer puppet-mode pg markdown-mode+ haskell-mode go-mode evil erlang cargo)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(rust-cargo-bin "/usr/local/bin/cargo")
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    (quote
@@ -158,3 +173,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)

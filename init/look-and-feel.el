@@ -5,7 +5,7 @@
 ;; Hide those ugly tool bars:
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
-(menu-bar-mode 0)
+;(menu-bar-mode 0)
 
 ;; Don't do any annoying things:
 (setq ring-bell-function 'ignore)
@@ -13,6 +13,14 @@
 
 ;; Remember layout changes
 (winner-mode 1)
+
+
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+
+(require 'indent-guide)
+(indent-guide-global-mode)
+(set-face-background 'indent-guide-face "dimgray")
 
 ;; Usually emacs will run as a proper GUI application, in which case a few
 ;; extra settings are nice-to-have:
@@ -69,11 +77,15 @@
                  line)
          'face 'linum)))
 
-;; Display tabs as 2 spaces
 (setq tab-width 2)
+(setq-default tab-width 2)
+(setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 2)
+
 
 ;; Don't wrap around when moving between buffers
 (setq windmove-wrap-around nil)
+
 
 (provide 'look-and-feel)
 

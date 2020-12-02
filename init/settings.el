@@ -6,6 +6,10 @@
 
 (ivy-mode 1)
 (counsel-mode 1)
+(global-display-line-numbers-mode)
+
+;(require 'git-gutter-fringe+)
+(global-git-gutter+-mode)
 
 ;(ivy-prescient-mode)
 ;(prescient-persist-mode)
@@ -26,8 +30,14 @@
       sentence-end-double-space nil
       shift-select-mode nil
       uniquify-buffer-name-style 'forward
-      whitespace-style '(face trailing lines-tail tabs)
+      whitespace-style '(face spaces tabs newline space-mark tab-mark newline-mark )
       whitespace-line-column 80
+      whitespace-display-mappings ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
+        '(
+          (space-mark 32 [183] [46]) ; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
+          (newline-mark 10 [182 10]) ; LINE FEED,
+          (tab-mark 9 [9655 9] [92 9]) ; tab
+          )
       default-directory "~"
       fill-column 80
       ediff-split-window-function 'split-window-horizontally)
@@ -65,7 +75,21 @@
 ;; Configure pinentry for use with GPG
 ;(setq epa-pinentry-mode 'loopback)
 ;(pinentry-start)
-(setq magit-repository-directories '(("/home/kirth/Work" . 2)))
-(setq-default dired-listing-switches "-alhv")
+(setq magit-repository-directories '(("/Users/kirth/Work" . 2)
+                                     ("/Users/kirth/Playground" . 2)
+                                     ))
+
+(setq-default dired-details-hidden-string "--- ")
+(setq dired-dwim-target t)
+
+; macOS' ls doesn't support --dired
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired t
+        insert-directory-program "/usr/local/bin/gls"
+        dired-listing-switches "-aBhl --group-directories-first"))
+
+
+;  emacs _should_ feel snappier
+(add-hook 'focus-out-hook #'garbage-collect)
 
 (provide 'settings)
