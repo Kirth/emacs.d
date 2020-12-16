@@ -86,6 +86,9 @@
 (global-set-key (kbd "s-f") 'forward-whitespace)
 (global-set-key (kbd "s-b") 'backward-whitespace)
 
+(global-set-key (kbd "C-w") 'kill-ring-save)
+(global-set-key (kbc "M-w") 'kill-region)
+
 
 ;(global-unset-key "\C-x mo")
 ;(global-set-key (kbd "C-x mo") 'occur)
