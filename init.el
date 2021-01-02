@@ -12,8 +12,8 @@
 (menu-bar-mode t)
 (setenv "PATH" (concat "/Users/kirth/.cargo/bin:" (concat "/usr/local/bin:" (getenv "PATH"))))
 
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+;(when (memq window-system '(mac ns x))
+;  (exec-path-from-shell-initialize))
 
 ;; Configure a few basics before moving on to package-specific initialisation.
 ;(setq custom-file (concat user-emacs-directory "init/custom.el"))
