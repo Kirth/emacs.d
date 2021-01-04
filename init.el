@@ -80,6 +80,9 @@
 	undo-tree
 	yaml-mode
 	projectile
+	string-inflection
+	expand-region
+	doom-modeline
     ))
 
 (defun installable-packages (pkg-list)
