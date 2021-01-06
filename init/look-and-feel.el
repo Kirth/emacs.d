@@ -18,9 +18,9 @@
 (require 'doom-modeline)
 (doom-modeline-mode 1)
 
-(require 'indent-guide)
-(indent-guide-global-mode)
-(set-face-background 'indent-guide-face "dimgray")
+;(require 'indent-guide)
+;(indent-guide-global-mode)
+;(set-face-background 'indent-guide-face "dimgray")
 
 ;; Usually emacs will run as a proper GUI application, in which case a few
 ;; extra settings are nice-to-have:
