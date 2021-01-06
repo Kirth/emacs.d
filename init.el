@@ -41,6 +41,7 @@
 	expand-region
 	go-mode
 	gradle-mode
+	git-gutter+
 	haskell-mode
 	ivy
 	ivy-prescient
