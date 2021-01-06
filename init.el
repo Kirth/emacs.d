@@ -25,9 +25,6 @@
 ;; Seed RNG
 (random t)
 
-;; Start server
-(server-start)
-
 ;; Add 'init' folder that contains other settings to load.
 (add-to-list 'load-path (concat user-emacs-directory "init"))
 ;(add-to-list 'custom-theme-load-path (concat user-emacs-directory "themes"))
